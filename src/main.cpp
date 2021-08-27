@@ -39,7 +39,11 @@ int main()
 			std::string& str = *(static_cast<std::string*> (arg));
 			printf("callback %s\n", str.c_str());
 			}, new std::string("test" + std::to_string(i))));
-		tp.push(pdata);
+		bool res = tp.push(pdata);
+		if (!res)
+		{
+			delete pdata;
+		}
 	}
 
 	while (is_running)
