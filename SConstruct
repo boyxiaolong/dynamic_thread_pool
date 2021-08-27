@@ -8,7 +8,7 @@ def list_dir(dir):
 				all_dirs.append(cur_dir)
 	return all_dirs
 
-cc_flags = {'CCFLAGS' : ['-ggdb', '-rdynamic']}
+cc_flags = {'CCFLAGS' : ['-D_LINUX', '-D_DEBUG', '-g', '-O0',]}
 inc_flags = {'CPPPATH':['src/']}
 obj = Glob('*.cpp')
 all_dirs = list_dir('./')
