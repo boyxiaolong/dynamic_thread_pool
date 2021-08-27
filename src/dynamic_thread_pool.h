@@ -17,8 +17,6 @@ public:
 	void start();
 	void stop();
 
-	void wait();
-
 	bool push(std::shared_ptr<task_callback> t);
 
 	bool handle_task(std::shared_ptr<task_callback> t);
