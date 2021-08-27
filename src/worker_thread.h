@@ -29,7 +29,7 @@ private:
 	std::mutex thread_lock_;
 	std::condition_variable con_;
 	int max_queue_size_;
-	std::thread* thd_ = NULL;
+	std::shared_ptr<std::thread> thd_ = NULL;
 	int thread_id_;
 	std::atomic<int> task_size_;
 };

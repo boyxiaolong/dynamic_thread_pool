@@ -50,7 +50,7 @@ void worker_thread::start()
 	{
 		return;
 	}
-	thd_ = new std::thread(&worker_thread::run, this);
+	thd_.reset(new std::thread(&worker_thread::run, this));
 }
 
 bool worker_thread::push(std::shared_ptr<task_callback> data)
