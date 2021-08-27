@@ -17,16 +17,12 @@ public:
 		{
 			cb_(cb_arg_);
 		}
-
-		if (cb_arg_)
-		{
-			delete cb_arg_;
-		}
 	}
 
 private:
 	task_callback_fun cb_ = NULL;
 	void* cb_arg_ = NULL;;
 };
+typedef task_callback* ptask_callback;
 
 #endif

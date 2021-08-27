@@ -17,9 +17,9 @@ public:
 	void start();
 	void stop();
 
-	bool push(std::shared_ptr<task_callback> t);
+	bool push(task_callback* t);
 
-	bool handle_task(std::shared_ptr<task_callback> t);
+	bool handle_task(task_callback* t);
 
 private:
 	bool check_min_threads();

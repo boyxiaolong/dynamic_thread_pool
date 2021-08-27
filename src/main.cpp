@@ -28,9 +28,9 @@ int main()
 	int max_thread_num = 10;
 	int max_queue_size = 10;
 	dynamic_thread_pool tp(min_thread_num, max_thread_num, max_queue_size);
-	for (int i = 0; i < 99; ++i)
+	for (int i = 0; i < 9; ++i)
 	{
-		std::shared_ptr<task_callback> ptask_callback(new task_callback([](void* arg) {
+		ptask_callback pdata(new task_callback([](void* arg) {
 			if (NULL == arg)
 			{
 				return;
@@ -39,7 +39,7 @@ int main()
 			std::string& str = *(static_cast<std::string*> (arg));
 			printf("callback %s\n", str.c_str());
 			}, new std::string("test" + std::to_string(i))));
-		tp.push(ptask_callback);
+		tp.push(pdata);
 	}
 
 	while (is_running)

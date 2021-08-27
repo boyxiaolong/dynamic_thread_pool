@@ -22,7 +22,7 @@ void worker_thread::run()
 {
 	while (thread_runing_)
 	{
-		std::queue<std::shared_ptr<task_callback>> temp;
+		std::queue<task_callback*> temp;
 		{
 			std::unique_lock<std::mutex> guard(task_lock_);
 			if (!tasks_.empty())
@@ -40,9 +40,14 @@ void worker_thread::run()
 		}
 		while (!temp.empty())
 		{
-			std::shared_ptr<task_callback> t = temp.front();
+			task_callback* t = temp.front();
+			if (NULL == t)
+			{
+				continue;
+			}
 			temp.pop();
 			t->process();
+			delete t;
 			--task_size_;
 		}
 	}
@@ -58,7 +63,7 @@ void worker_thread::start()
 	thd_ = new std::thread(&worker_thread::run, this);
 }
 
-bool worker_thread::push(std::shared_ptr<task_callback> data)
+bool worker_thread::push(task_callback* data)
 {
 	bool is_notify = false;
 	{

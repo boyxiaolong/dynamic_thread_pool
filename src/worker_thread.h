@@ -15,7 +15,7 @@ public:
 	virtual ~worker_thread();
 	void run();
 	void start();
-	bool push(std::shared_ptr<task_callback> data);
+	bool push(task_callback* data);
 	void wait();
 	void stop();
 	bool is_full();
@@ -23,7 +23,7 @@ public:
 	int get_thread_id();
 
 private:
-	std::queue<std::shared_ptr<task_callback>> tasks_;
+	std::queue<task_callback*> tasks_;
 	std::atomic<bool> thread_runing_;
 	std::mutex task_lock_;
 	std::mutex thread_lock_;

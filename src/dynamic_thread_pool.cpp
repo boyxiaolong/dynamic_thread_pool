@@ -45,7 +45,7 @@ void dynamic_thread_pool::stop()
 	}
 }
 
-bool dynamic_thread_pool::push(std::shared_ptr<task_callback> t)
+bool dynamic_thread_pool::push(task_callback* t)
 {
 	if (!is_runing_)
 	{
@@ -59,7 +59,7 @@ bool dynamic_thread_pool::push(std::shared_ptr<task_callback> t)
 	return handle_task(t);
 }
 
-bool dynamic_thread_pool::handle_task(std::shared_ptr<task_callback> t)
+bool dynamic_thread_pool::handle_task(task_callback* t)
 {
 	bool is_handled = false;
 	std::unique_lock<std::mutex> guard(thread_lock_);
