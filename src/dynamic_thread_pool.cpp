@@ -1,5 +1,6 @@
 #include "dynamic_thread_pool.h"
 #include "worker_thread.h"
+#include "stdio.h"
 
 dynamic_thread_pool::dynamic_thread_pool(int min_thread_num, int max_thread_num, int max_queue_size) : min_thread_num_(min_thread_num)
 , max_thread_num_(max_thread_num)

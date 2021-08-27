@@ -3,7 +3,7 @@
 #include <mutex>
 #include <list>
 #include <atomic>
-
+#include <memory>
 class task_callback;
 class worker_thread;
 
