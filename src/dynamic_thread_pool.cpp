@@ -45,6 +45,11 @@ void dynamic_thread_pool::stop()
 	}
 }
 
+void dynamic_thread_pool::wait()
+{
+
+}
+
 bool dynamic_thread_pool::push(std::shared_ptr<task_callback> t)
 {
 	if (!is_runing_)

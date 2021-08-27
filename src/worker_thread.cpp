@@ -1,6 +1,6 @@
 #include "worker_thread.h"
 #include "task_callback.h"
-
+#include "stdio.h"
 worker_thread::worker_thread(int thread_id, int max_queue_size) :thread_id_(thread_id)
 , max_queue_size_(max_queue_size)
 , task_size_(0)
@@ -11,7 +11,7 @@ worker_thread::worker_thread(int thread_id, int max_queue_size) :thread_id_(thre
 
 worker_thread::~worker_thread()
 {
-
+	printf("~worker_thread %d \n", thread_id_);
 }
 
 void worker_thread::run()
@@ -88,6 +88,8 @@ void worker_thread::wait()
 void worker_thread::stop()
 {
 	thread_runing_ = false;
+	wait();
+	printf("thread %d stop\n", thread_id_);
 }
 
 bool worker_thread::is_full()
