@@ -9,7 +9,7 @@ class task_callback
 {
 public:
 	explicit task_callback(task_callback_fun fun, void* cb_arg);
-	virtual ~task_callback(){}
+	virtual ~task_callback();
 
 	virtual void process()
 	{

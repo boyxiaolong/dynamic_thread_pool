@@ -28,7 +28,7 @@ int main()
 	int max_thread_num = 10;
 	int max_queue_size = 10;
 	dynamic_thread_pool tp(min_thread_num, max_thread_num, max_queue_size);
-	for (int i = 0; i < 999; ++i)
+	for (int i = 0; i < 99; ++i)
 	{
 		std::shared_ptr<task_callback> ptask_callback(new task_callback([](void* arg) {
 			if (NULL == arg)
