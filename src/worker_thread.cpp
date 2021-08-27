@@ -4,13 +4,17 @@
 worker_thread::worker_thread(int thread_id, int max_queue_size) :thread_id_(thread_id)
 , max_queue_size_(max_queue_size)
 , task_size_(0)
-, thread_runing_(true)
+, thread_runing_(false)
 {
 	printf("max_queue_size_ %d\n", max_queue_size_);
 }
 
 worker_thread::~worker_thread()
 {
+	if (thd_)
+	{
+		delete thd_;
+	}
 	printf("~worker_thread %d \n", thread_id_);
 }
 
@@ -50,7 +54,8 @@ void worker_thread::start()
 	{
 		return;
 	}
-	thd_.reset(new std::thread(&worker_thread::run, this));
+	thread_runing_ = true;
+	thd_ = new std::thread(&worker_thread::run, this);
 }
 
 bool worker_thread::push(std::shared_ptr<task_callback> data)
