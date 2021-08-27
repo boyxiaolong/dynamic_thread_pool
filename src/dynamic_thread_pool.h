@@ -2,6 +2,7 @@
 #define dynamic_thread_pool_h
 #include <mutex>
 #include <list>
+#include <atomic>
 
 class task_callback;
 class worker_thread;

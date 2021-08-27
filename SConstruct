@@ -9,9 +9,7 @@ def list_dir(dir):
 	return all_dirs
 
 cc_flags = {'CCFLAGS' : ['-ggdb', '-rdynamic']}
-inc_flags = {'CPPPATH':['async-redis-cli/example', 'async-redis-cli/libevent-session'
-, 'async-redis-cli/redis-cli',  'async-redis-cli/unix-include'
-, 'async-redis-cli/unix-include/event2']}
+inc_flags = {'CPPPATH':['src/']}
 obj = Glob('*.cpp')
 all_dirs = list_dir('./')
 print all_dirs
