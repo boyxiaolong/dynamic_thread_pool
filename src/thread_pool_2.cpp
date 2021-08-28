@@ -22,27 +22,40 @@ void thread_pool_2::stop()
 {
 	printf("stop threadpool\n");
 	is_runing_ = false;
-	std::unique_lock<std::mutex> guard(thread_lock_);
-	for (thread_vec::iterator iter = thd_vec_.begin();
-		iter != thd_vec_.end(); ++iter)
 	{
-		pworker_thread_2 pw = *iter;
-		if (pw)
+		std::unique_lock<std::mutex> guard(thread_lock_);
+		for (thread_vec::iterator iter = thd_vec_.begin();
+			iter != thd_vec_.end(); ++iter)
 		{
-			pw->stop();
+			pworker_thread_2 pw = *iter;
+			if (pw)
+			{
+				pw->stop();
+			}
+		}
+
+		task_con_.notify_all();
+
+		for (thread_vec::iterator iter = thd_vec_.begin();
+			iter != thd_vec_.end(); ++iter)
+		{
+			pworker_thread_2 pw = *iter;
+			if (pw)
+			{
+				delete pw;
+			}
 		}
 	}
 
-	task_con_.notify_all();
-
-	for (thread_vec::iterator iter = thd_vec_.begin();
-		iter != thd_vec_.end(); ++iter)
+	std::unique_lock<std::mutex> guard(task_lock_);
+	while (!tasks_.empty())
 	{
-		pworker_thread_2 pw = *iter;
-		if (pw)
+		task_callback* pc = tasks_.front();
+		if (pc)
 		{
-			delete pw;
+			delete pc;
 		}
+		tasks_.pop();
 	}
 }
 
