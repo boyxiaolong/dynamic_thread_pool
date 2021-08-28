@@ -14,6 +14,7 @@
 #include "dynamic_thread_pool.h"
 #include "stdio.h"
 #include <memory>
+#include "thread_pool_2.h"
 
 volatile std::sig_atomic_t gSignalStatus;
 std::atomic_bool is_running(true);
@@ -27,7 +28,8 @@ int main()
 	int min_thread_num = 5;
 	int max_thread_num = 10;
 	int max_queue_size = 10;
-	dynamic_thread_pool tp(min_thread_num, max_thread_num, max_queue_size);
+	thread_pool_2 tp(min_thread_num, max_thread_num, max_queue_size);
+	tp.start();
 	{
 		auto fun = [](void* arg) {
 			if (NULL == arg)
@@ -38,7 +40,7 @@ int main()
 			int& str = *(static_cast<int*> (arg));
 			printf("callback %d\n", str);
 		};
-		for (int i = 1; i < 9; ++i)
+		for (int i = 1; i < 2; ++i)
 		{
 			ptask_callback pdata(new task_callback(fun, new int(i)));
 			bool res = tp.push(pdata);

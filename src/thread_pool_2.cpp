@@ -1,5 +1,5 @@
 #include "thread_pool_2.h"
-#include "worker_thread.h"
+#include "worker_thread_2.h"
 #include "stdio.h"
 
 thread_pool_2::thread_pool_2(int min_thread_num, int max_thread_num, int max_queue_size) : min_thread_num_(min_thread_num)
@@ -28,16 +28,19 @@ void thread_pool_2::stop()
 	for (thread_vec::iterator iter = thd_vec_.begin();
 		iter != thd_vec_.end(); ++iter)
 	{
-		pworker_thread pw = *iter;
+		pworker_thread_2 pw = *iter;
 		if (pw)
 		{
 			pw->stop();
 		}
 	}
+
+	task_con_.notify_all();
+
 	for (thread_vec::iterator iter = thd_vec_.begin();
 		iter != thd_vec_.end(); ++iter)
 	{
-		pworker_thread pw = *iter;
+		pworker_thread_2 pw = *iter;
 		if (pw)
 		{
 			delete pw;
@@ -63,9 +66,28 @@ bool thread_pool_2::handle_task(task_callback* t)
 	{
 		task_con_.notify_one();
 	}
-	return false;
+	return true;
 }
 
+
+task_callback* thread_pool_2::get_task()
+{
+	std::unique_lock<std::mutex> guard(task_lock_);
+	while (tasks_.empty())
+	{
+		task_con_.wait(guard);
+	}
+	
+	auto pt = tasks_.front();
+	tasks_.pop();
+	return pt;
+}
+
+void thread_pool_2::wait_tasks()
+{
+	std::unique_lock<std::mutex> guard(thread_lock_);
+	task_con_.wait(guard);
+}
 
 bool thread_pool_2::check_min_threads()
 {
@@ -76,6 +98,9 @@ bool thread_pool_2::check_min_threads()
 		auto thread_fun = []() {};
 		for (int i = thd_size + 1; i <= min_thread_num_; ++i)
 		{
+			pworker_thread_2 pwt = new worker_thread_2(i, this);
+			pwt->start();
+			thd_vec_.push_back(pwt);
 		}
 		return true;
 	}
@@ -84,32 +109,5 @@ bool thread_pool_2::check_min_threads()
 
 bool thread_pool_2::shrink_threads()
 {
-	std::unique_lock<std::mutex> guard(thread_lock_);
-	int thd_size = thd_vec_.size();
-	if (thd_size <= min_thread_num_)
-	{
-		return false;
-	}
-	int i = 0;
-	for (thread_vec::iterator iter = thd_vec_.begin();
-		iter != thd_vec_.end(); )
-	{
-		++i;
-		if (i <= min_thread_num_)
-		{
-			++iter;
-			continue;
-		}
-		pworker_thread pw = *iter;
-		if (pw && pw->is_empty())
-		{
-			printf("shrink_threads %d\n", pw->get_thread_id());
-			pw->stop();
-			delete pw;
-			iter = thd_vec_.erase(iter);
-			continue;
-		}
-		++iter;
-	}
 	return true;
 }

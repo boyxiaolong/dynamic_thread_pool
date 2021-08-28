@@ -6,12 +6,12 @@
 #include <memory>
 #include <queue>
 class task_callback;
-class worker_thread;
+class worker_thread_2;
 
 class thread_pool_2
 {
 public:
-	typedef std::list<std::thread*> thread_vec;
+	typedef std::list<worker_thread_2*> thread_vec;
 	thread_pool_2(int min_thread_num, int max_thread_num, int max_queue_size);
 	~thread_pool_2();
 
@@ -21,6 +21,9 @@ public:
 	bool push(task_callback* t);
 
 	bool handle_task(task_callback* t);
+
+	task_callback* get_task();
+	void wait_tasks();
 
 private:
 	bool check_min_threads();
