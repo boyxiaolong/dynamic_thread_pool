@@ -1,1 +1,1 @@
-valgrind --tool=memcheck --leak-check=full ./dynamic_thread_pool
+valgrind --tool=memcheck --leak-check=full ./thread_pool
