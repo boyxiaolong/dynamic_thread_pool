@@ -1,26 +1,26 @@
-#include "thread_pool_2.h"
-#include "worker_thread_2.h"
+#include "thread_pool.h"
+#include "worker_thread.h"
 #include "stdio.h"
 #include "task_callback.h"
 
-thread_pool_2::thread_pool_2(int thread_num) : thread_num_(thread_num)
+thread_pool::thread_pool(int thread_num) : thread_num_(thread_num)
 , is_runing_(true)
 , total_task_size_(0)
 {
 
 }
 
-thread_pool_2::~thread_pool_2()
+thread_pool::~thread_pool()
 {
 	stop();
 }
 
-void thread_pool_2::start()
+void thread_pool::start()
 {
 	_gen_threads();
 }
 
-void thread_pool_2::stop()
+void thread_pool::stop()
 {
 	printf("stop threadpool\n");
 	is_runing_ = false;
@@ -61,7 +61,7 @@ void thread_pool_2::stop()
 	}
 }
 
-bool thread_pool_2::push(task_callback_type t)
+bool thread_pool::push(task_callback_type t)
 {
 	if (!is_runing_)
 	{
@@ -70,7 +70,7 @@ bool thread_pool_2::push(task_callback_type t)
 	return handle_task(t);
 }
 
-bool thread_pool_2::handle_task(task_callback_type t)
+bool thread_pool::handle_task(task_callback_type t)
 {
 	++total_task_size_;
 	std::unique_lock<std::mutex> guard(task_lock_);
@@ -84,7 +84,7 @@ bool thread_pool_2::handle_task(task_callback_type t)
 }
 
 
-task_callback_type thread_pool_2::get_task()
+task_callback_type thread_pool::get_task()
 {
 	std::unique_lock<std::mutex> guard(task_lock_);
 	while (tasks_.empty())
@@ -103,22 +103,22 @@ task_callback_type thread_pool_2::get_task()
 	return pt;
 }
 
-void thread_pool_2::wait_tasks()
+void thread_pool::wait_tasks()
 {
 	std::unique_lock<std::mutex> guard(thread_lock_);
 	task_con_.wait(guard);
 }
 
-bool thread_pool_2::_gen_threads()
+bool thread_pool::_gen_threads()
 {
 	std::unique_lock<std::mutex> guard(thread_lock_);
-	int thd_size = thd_vec_.size();
+	size_t thd_size = thd_vec_.size();
 	if (thd_size < thread_num_)
 	{
 		auto thread_fun = []() {};
-		for (int i = thd_size + 1; i <= thread_num_; ++i)
+		for (size_t i = thd_size + 1; i <= thread_num_; ++i)
 		{
-			pworker_thread_2 pwt = new worker_thread_2(i, this);
+			pworker_thread_2 pwt = new worker_thread(i, this);
 			pwt->start();
 			thd_vec_.push_back(pwt);
 		}

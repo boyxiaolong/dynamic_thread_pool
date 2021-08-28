@@ -1,5 +1,5 @@
-#ifndef dynamic_thread_pool_2_h
-#define dynamic_thread_pool_2_h
+#ifndef thread_pool_h
+#define thread_pool_h
 #include <list>
 #include <thread>
 #include <queue>
@@ -10,14 +10,14 @@
 #include "utils.h"
 
 class task_callback;
-class worker_thread_2;
+class worker_thread;
 
-class thread_pool_2
+class thread_pool
 {
 public:
-	typedef std::list<worker_thread_2*> thread_vec;
-	thread_pool_2(int min_thread_num);
-	~thread_pool_2();
+	typedef std::list<worker_thread*> thread_vec;
+	thread_pool(int min_thread_num);
+	~thread_pool();
 
 	void start();
 	void stop();

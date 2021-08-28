@@ -14,7 +14,7 @@
 #include "dynamic_thread_pool.h"
 #include "stdio.h"
 #include <memory>
-#include "thread_pool_2.h"
+#include "thread_pool.h"
 
 volatile std::sig_atomic_t gSignalStatus;
 std::atomic_bool is_running(true);
@@ -26,7 +26,7 @@ int main()
 {
 	std::signal(SIGINT, sig_handler);
 	int thread_num = 5;
-	thread_pool_2 tp(thread_num);
+	thread_pool tp(thread_num);
 	tp.start();
 	{
 		auto fun = [](void* arg) {
