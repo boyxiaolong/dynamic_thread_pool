@@ -25,10 +25,8 @@ void sig_handler(int sig)
 int main()
 {
 	std::signal(SIGINT, sig_handler);
-	int min_thread_num = 5;
-	int max_thread_num = 10;
-	int max_queue_size = 10;
-	thread_pool_2 tp(min_thread_num, max_thread_num, max_queue_size);
+	int thread_num = 5;
+	thread_pool_2 tp(thread_num);
 	tp.start();
 	{
 		auto fun = [](void* arg) {

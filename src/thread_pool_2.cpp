@@ -2,7 +2,7 @@
 #include "worker_thread_2.h"
 #include "stdio.h"
 
-thread_pool_2::thread_pool_2(int min_thread_num, int max_thread_num, int max_queue_size) : min_thread_num_(min_thread_num)
+thread_pool_2::thread_pool_2(int thread_num) : thread_num_(thread_num)
 , is_runing_(true)
 {
 
@@ -15,7 +15,7 @@ thread_pool_2::~thread_pool_2()
 
 void thread_pool_2::start()
 {
-	check_min_threads();
+	_gen_threads();
 }
 
 void thread_pool_2::stop()
@@ -91,14 +91,14 @@ void thread_pool_2::wait_tasks()
 	task_con_.wait(guard);
 }
 
-bool thread_pool_2::check_min_threads()
+bool thread_pool_2::_gen_threads()
 {
 	std::unique_lock<std::mutex> guard(thread_lock_);
 	int thd_size = thd_vec_.size();
-	if (thd_size < min_thread_num_)
+	if (thd_size < thread_num_)
 	{
 		auto thread_fun = []() {};
-		for (int i = thd_size + 1; i <= min_thread_num_; ++i)
+		for (int i = thd_size + 1; i <= thread_num_; ++i)
 		{
 			pworker_thread_2 pwt = new worker_thread_2(i, this);
 			pwt->start();
