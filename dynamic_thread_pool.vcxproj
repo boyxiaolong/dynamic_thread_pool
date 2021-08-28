@@ -150,7 +150,7 @@
     <ClInclude Include="src\dynamic_thread_pool.h" />
     <ClInclude Include="src\thread_pool_2.h" />
     <ClInclude Include="src\task_callback.h" />
-    <ClInclude Include="src\unils.h" />
+    <ClInclude Include="src\utils.h" />
     <ClInclude Include="src\worker_thread.h" />
     <ClInclude Include="src\worker_thread_2.h" />
   </ItemGroup>
