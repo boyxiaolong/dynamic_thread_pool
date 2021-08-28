@@ -41,6 +41,8 @@ private:
 	std::queue<task_callback*> tasks_;
 	std::condition_variable task_con_;
 
+	std::atomic<int> total_task_size_;
+
 };
 
 #endif

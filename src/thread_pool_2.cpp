@@ -4,6 +4,7 @@
 
 thread_pool_2::thread_pool_2(int thread_num) : thread_num_(thread_num)
 , is_runing_(true)
+, total_task_size_(0)
 {
 
 }
@@ -47,7 +48,10 @@ void thread_pool_2::stop()
 		}
 	}
 
+	printf("left task :%d\b", (int)total_task_size_);
+
 	std::unique_lock<std::mutex> guard(task_lock_);
+	printf("queue size:%d\b", (int)tasks_.size());
 	while (!tasks_.empty())
 	{
 		task_callback* pc = tasks_.front();
@@ -70,6 +74,7 @@ bool thread_pool_2::push(task_callback* t)
 
 bool thread_pool_2::handle_task(task_callback* t)
 {
+	++total_task_size_;
 	std::unique_lock<std::mutex> guard(task_lock_);
 	bool is_empty = tasks_.empty();
 	tasks_.push(t);
@@ -95,6 +100,8 @@ task_callback* thread_pool_2::get_task()
 	
 	auto pt = tasks_.front();
 	tasks_.pop();
+
+	--total_task_size_;
 	return pt;
 }
 
