@@ -28,17 +28,18 @@ int main()
 	int max_thread_num = 10;
 	int max_queue_size = 10;
 	dynamic_thread_pool tp(min_thread_num, max_thread_num, max_queue_size);
-	for (int i = 0; i < 9; ++i)
-	{
-		ptask_callback pdata(new task_callback([](void* arg) {
-			if (NULL == arg)
-			{
-				return;
-			}
+	auto fun = [](void* arg) {
+		if (NULL == arg)
+		{
+			return;
+		}
 
-			std::string& str = *(static_cast<std::string*> (arg));
-			printf("callback %s\n", str.c_str());
-			}, new std::string("test" + std::to_string(i))));
+		int& str = *(static_cast<int*> (arg));
+		printf("callback %d\n", str);
+	};
+	for (int i = 1; i < 9; ++i)
+	{
+		ptask_callback pdata(new task_callback(fun, new int(i)));
 		bool res = tp.push(pdata);
 		if (!res)
 		{
