@@ -2,6 +2,7 @@
 #include "task_callback.h"
 #include "stdio.h"
 #include "thread_pool_2.h"
+#include "unils.h"
 
 worker_thread_2::worker_thread_2(int thread_id, thread_pool_2* pthread_pool) :thread_id_(thread_id)
 , thread_runing_(false)
@@ -23,14 +24,13 @@ void worker_thread_2::run()
 {
 	while (thread_runing_)
 	{
-		task_callback* ptask = pthread_pool_->get_task();
+		task_callback_type ptask = pthread_pool_->get_task();
 		if (nullptr == ptask)
 		{
 			break;
 		}
 		printf("thread %d process\n", thread_id_);
 		ptask->process();
-		delete ptask;
 	}
 }
 

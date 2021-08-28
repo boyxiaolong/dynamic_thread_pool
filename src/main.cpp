@@ -40,12 +40,8 @@ int main()
 		};
 		for (int i = 1; i < 99999; ++i)
 		{
-			ptask_callback pdata( task_callback::create(fun, new int(i)));
+			std::shared_ptr<task_callback> pdata(task_callback::create(fun, new int(i)));
 			bool res = tp.push(pdata);
-			if (!res)
-			{
-				delete pdata;
-			}
 		}
 	}
 

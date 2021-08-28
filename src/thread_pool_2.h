@@ -7,6 +7,7 @@
 #include <condition_variable>
 #include <atomic>
 #include <memory>
+#include "unils.h"
 
 class task_callback;
 class worker_thread_2;
@@ -21,11 +22,11 @@ public:
 	void start();
 	void stop();
 
-	bool push(task_callback* t);
+	bool push(task_callback_type t);
 
-	bool handle_task(task_callback* t);
+	bool handle_task(task_callback_type t);
 
-	task_callback* get_task();
+	task_callback_type get_task();
 	void wait_tasks();
 
 private:
@@ -38,7 +39,7 @@ private:
 	std::atomic<bool> is_runing_;
 
 	std::mutex task_lock_;
-	std::queue<task_callback*> tasks_;
+	std::queue<task_callback_type> tasks_;
 	std::condition_variable task_con_;
 
 	std::atomic<int> total_task_size_;

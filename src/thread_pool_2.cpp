@@ -55,17 +55,13 @@ void thread_pool_2::stop()
 	printf("queue size:%d\b", (int)tasks_.size());
 	while (!tasks_.empty())
 	{
-		task_callback* pc = tasks_.front();
-		if (pc)
-		{
-			delete pc;
-		}
+		task_callback_type pc = tasks_.front();
 		tasks_.pop();
 		printf("dtor task index:%d\n", pc->get_index());
 	}
 }
 
-bool thread_pool_2::push(task_callback* t)
+bool thread_pool_2::push(task_callback_type t)
 {
 	if (!is_runing_)
 	{
@@ -74,7 +70,7 @@ bool thread_pool_2::push(task_callback* t)
 	return handle_task(t);
 }
 
-bool thread_pool_2::handle_task(task_callback* t)
+bool thread_pool_2::handle_task(task_callback_type t)
 {
 	++total_task_size_;
 	std::unique_lock<std::mutex> guard(task_lock_);
@@ -88,7 +84,7 @@ bool thread_pool_2::handle_task(task_callback* t)
 }
 
 
-task_callback* thread_pool_2::get_task()
+task_callback_type thread_pool_2::get_task()
 {
 	std::unique_lock<std::mutex> guard(task_lock_);
 	while (tasks_.empty())
@@ -100,7 +96,7 @@ task_callback* thread_pool_2::get_task()
 		task_con_.wait(guard);
 	}
 	
-	auto pt = tasks_.front();
+	task_callback_type pt = tasks_.front();
 	tasks_.pop();
 
 	--total_task_size_;
