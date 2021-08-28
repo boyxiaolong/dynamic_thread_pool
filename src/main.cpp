@@ -11,7 +11,6 @@
 
 #include "task_callback.h"
 #include "worker_thread.h"
-#include "dynamic_thread_pool.h"
 #include "stdio.h"
 #include <memory>
 #include "thread_pool.h"
