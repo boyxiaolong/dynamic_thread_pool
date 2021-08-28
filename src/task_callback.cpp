@@ -2,7 +2,7 @@
 #include <string>
 #include <atomic>
 
-static std::atomic<int> index = 0;
+static std::atomic<int> index(0);
 
 task_callback* task_callback::create(task_callback_fun fun, void* cb_arg)
 {
