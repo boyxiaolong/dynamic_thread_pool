@@ -61,7 +61,7 @@ void thread_pool_2::stop()
 			delete pc;
 		}
 		tasks_.pop();
-		printf("task index:%d\n", pc->get_index());
+		printf("dtor task index:%d\n", pc->get_index());
 	}
 }
 

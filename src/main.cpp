@@ -38,7 +38,7 @@ int main()
 			int& str = *(static_cast<int*> (arg));
 			printf("callback %d\n", str);
 		};
-		for (int i = 1; i < 999; ++i)
+		for (int i = 1; i < 99999; ++i)
 		{
 			ptask_callback pdata( task_callback::create(fun, new int(i)));
 			bool res = tp.push(pdata);
