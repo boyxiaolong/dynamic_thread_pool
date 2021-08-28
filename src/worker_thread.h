@@ -26,6 +26,6 @@ private:
 	int thread_id_;
 	thread_pool* pthread_pool_;
 };
-typedef worker_thread* pworker_thread_2;
+typedef worker_thread* pworker_thread;
 #endif
 

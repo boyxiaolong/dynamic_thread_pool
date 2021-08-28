@@ -41,7 +41,7 @@ int main()
 		for (int i = 1; i < 9; ++i)
 		{
 			std::shared_ptr<task_callback> pdata(task_callback::create(fun, new int(i)));
-			bool res = tp.push(pdata);
+			tp.push(pdata);
 		}
 	}
 

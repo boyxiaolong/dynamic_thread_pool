@@ -26,10 +26,10 @@ void thread_pool::stop()
 	is_runing_ = false;
 	{
 		std::unique_lock<std::mutex> guard(thread_lock_);
-		for (thread_vec::iterator iter = thd_vec_.begin();
+		for (thread_vec_type::iterator iter = thd_vec_.begin();
 			iter != thd_vec_.end(); ++iter)
 		{
-			pworker_thread_2 pw = *iter;
+			worker_thread_type pw = *iter;
 			if (pw)
 			{
 				pw->stop();
@@ -37,16 +37,6 @@ void thread_pool::stop()
 		}
 
 		task_con_.notify_all();
-
-		for (thread_vec::iterator iter = thd_vec_.begin();
-			iter != thd_vec_.end(); ++iter)
-		{
-			pworker_thread_2 pw = *iter;
-			if (pw)
-			{
-				delete pw;
-			}
-		}
 	}
 
 	printf("left task :%d\b", (int)total_task_size_);
@@ -118,7 +108,7 @@ bool thread_pool::_gen_threads()
 		auto thread_fun = []() {};
 		for (size_t i = thd_size + 1; i <= thread_num_; ++i)
 		{
-			pworker_thread_2 pwt = new worker_thread(i, this);
+			worker_thread_type pwt(new worker_thread(i, this));
 			pwt->start();
 			thd_vec_.push_back(pwt);
 		}

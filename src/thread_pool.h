@@ -15,7 +15,7 @@ class worker_thread;
 class thread_pool
 {
 public:
-	typedef std::list<worker_thread*> thread_vec;
+	
 	thread_pool(int min_thread_num);
 	~thread_pool();
 
@@ -33,8 +33,11 @@ private:
 	bool _gen_threads();
 
 private:
+	typedef std::shared_ptr<worker_thread> worker_thread_type;
+	typedef std::list<worker_thread_type > thread_vec_type;
+
 	int thread_num_;
-	thread_vec thd_vec_;
+	thread_vec_type thd_vec_;
 	std::mutex thread_lock_;
 	std::atomic<bool> is_runing_;
 
