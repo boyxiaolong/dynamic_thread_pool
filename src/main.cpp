@@ -28,24 +28,27 @@ int main()
 	int max_thread_num = 10;
 	int max_queue_size = 10;
 	dynamic_thread_pool tp(min_thread_num, max_thread_num, max_queue_size);
-	auto fun = [](void* arg) {
-		if (NULL == arg)
-		{
-			return;
-		}
-
-		int& str = *(static_cast<int*> (arg));
-		printf("callback %d\n", str);
-	};
-	for (int i = 1; i < 9; ++i)
 	{
-		ptask_callback pdata(new task_callback(fun, new int(i)));
-		bool res = tp.push(pdata);
-		if (!res)
+		auto fun = [](void* arg) {
+			if (NULL == arg)
+			{
+				return;
+			}
+
+			int& str = *(static_cast<int*> (arg));
+			printf("callback %d\n", str);
+		};
+		for (int i = 1; i < 9; ++i)
 		{
-			delete pdata;
+			ptask_callback pdata(new task_callback(fun, new int(i)));
+			bool res = tp.push(pdata);
+			if (!res)
+			{
+				delete pdata;
+			}
 		}
 	}
+
 
 	while (is_running)
 	{
