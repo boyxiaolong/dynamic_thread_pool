@@ -11,12 +11,12 @@ worker_thread_2::worker_thread_2(int thread_id, thread_pool_2* pthread_pool) :th
 
 worker_thread_2::~worker_thread_2()
 {
+	printf("~worker_thread %d \n", thread_id_);
 	if (thd_)
 	{
 		thd_->join();
 		delete thd_;
 	}
-	printf("~worker_thread %d \n", thread_id_);
 }
 
 void worker_thread_2::run()

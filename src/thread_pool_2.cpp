@@ -75,6 +75,10 @@ task_callback* thread_pool_2::get_task()
 	std::unique_lock<std::mutex> guard(task_lock_);
 	while (tasks_.empty())
 	{
+		if (!is_runing_)
+		{
+			return NULL;
+		}
 		task_con_.wait(guard);
 	}
 	
