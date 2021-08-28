@@ -21,6 +21,7 @@ public:
 	bool is_full();
 	bool is_empty();
 	int get_thread_id();
+	int task_size() { return task_size_; }
 
 private:
 	std::queue<task_callback*> tasks_;

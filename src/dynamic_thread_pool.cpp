@@ -61,7 +61,8 @@ bool dynamic_thread_pool::push(task_callback* t)
 
 bool dynamic_thread_pool::handle_task(task_callback* t)
 {
-	bool is_handled = false;
+	pworker_thread min_thd = nullptr;
+
 	std::unique_lock<std::mutex> guard(thread_lock_);
 	for (thread_vec::iterator iter = thd_vec_.begin();
 		iter != thd_vec_.end(); ++iter)
@@ -71,15 +72,21 @@ bool dynamic_thread_pool::handle_task(task_callback* t)
 		{
 			continue;
 		}
-		if (pw->is_full())
+
+		if (nullptr == min_thd)
 		{
+			min_thd = pw;
 			continue;
 		}
-		is_handled = pw->push(t);
-		break;
+
+		if (min_thd->task_size() > pw->task_size())
+		{
+			min_thd = pw;
+		}
 	}
 
-	if (is_handled)
+	if (min_thd && !min_thd->is_full()
+		&& min_thd->push(t))
 	{
 		return true;
 	}
