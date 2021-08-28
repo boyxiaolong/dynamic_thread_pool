@@ -3,8 +3,6 @@
 #include "stdio.h"
 
 thread_pool_2::thread_pool_2(int min_thread_num, int max_thread_num, int max_queue_size) : min_thread_num_(min_thread_num)
-, max_thread_num_(max_thread_num)
-, max_queue_size_(max_queue_size)
 , is_runing_(true)
 {
 
@@ -109,9 +107,4 @@ bool thread_pool_2::check_min_threads()
 		return true;
 	}
 	return false;
-}
-
-bool thread_pool_2::shrink_threads()
-{
-	return true;
 }

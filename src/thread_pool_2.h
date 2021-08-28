@@ -1,10 +1,13 @@
 #ifndef dynamic_thread_pool_2_h
 #define dynamic_thread_pool_2_h
-#include <mutex>
 #include <list>
+#include <thread>
+#include <queue>
+#include <mutex>
+#include <condition_variable>
 #include <atomic>
 #include <memory>
-#include <queue>
+
 class task_callback;
 class worker_thread_2;
 
@@ -27,12 +30,9 @@ public:
 
 private:
 	bool check_min_threads();
-	bool shrink_threads();
 
 private:
 	int min_thread_num_;
-	int max_thread_num_;
-	int max_queue_size_;
 	thread_vec thd_vec_;
 	std::mutex thread_lock_;
 	std::atomic<bool> is_runing_;

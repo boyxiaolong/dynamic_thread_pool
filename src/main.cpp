@@ -40,7 +40,7 @@ int main()
 			int& str = *(static_cast<int*> (arg));
 			printf("callback %d\n", str);
 		};
-		for (int i = 1; i < 2; ++i)
+		for (int i = 1; i < 999; ++i)
 		{
 			ptask_callback pdata(new task_callback(fun, new int(i)));
 			bool res = tp.push(pdata);
