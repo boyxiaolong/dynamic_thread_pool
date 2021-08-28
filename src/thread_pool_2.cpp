@@ -1,6 +1,7 @@
 #include "thread_pool_2.h"
 #include "worker_thread_2.h"
 #include "stdio.h"
+#include "task_callback.h"
 
 thread_pool_2::thread_pool_2(int thread_num) : thread_num_(thread_num)
 , is_runing_(true)
@@ -60,6 +61,7 @@ void thread_pool_2::stop()
 			delete pc;
 		}
 		tasks_.pop();
+		printf("task index:%d\n", pc->get_index());
 	}
 }
 

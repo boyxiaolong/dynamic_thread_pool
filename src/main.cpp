@@ -40,7 +40,7 @@ int main()
 		};
 		for (int i = 1; i < 999; ++i)
 		{
-			ptask_callback pdata(new task_callback(fun, new int(i)));
+			ptask_callback pdata( task_callback::create(fun, new int(i)));
 			bool res = tp.push(pdata);
 			if (!res)
 			{
