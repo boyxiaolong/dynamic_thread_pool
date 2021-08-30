@@ -1,6 +1,7 @@
 #include "task_callback.h"
 #include <string>
 #include <atomic>
+#include <limits>
 
 static std::atomic<int> index(0);
 
@@ -8,6 +9,10 @@ task_callback* task_callback::create(task_callback_fun fun, void* cb_arg)
 {
 	task_callback* pt = new task_callback(fun, cb_arg);
 	pt->set_index(index++);
+	if (index == std::numeric_limits<int>::max())
+	{
+		index = 1;
+	}
 	printf("create index:%d\n", pt->get_index());
 	return pt;
 }
