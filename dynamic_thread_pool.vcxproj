@@ -139,14 +139,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\dynamic_thread_pool.cpp" />
+    <ClCompile Include="src\thread_pool.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\task_callback.cpp" />
     <ClCompile Include="src\worker_thread.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\dynamic_thread_pool.h" />
+    <ClInclude Include="src\thread_pool.h" />
     <ClInclude Include="src\task_callback.h" />
+    <ClInclude Include="src\utils.h" />
     <ClInclude Include="src\worker_thread.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

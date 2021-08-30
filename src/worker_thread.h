@@ -8,30 +8,23 @@
 #include <memory>
 
 class task_callback;
+class thread_pool;
 class worker_thread
 {
 public:
-	worker_thread(int thread_id, int max_queue_size);
+	worker_thread(int thread_id, thread_pool* pthread_pool);
 	virtual ~worker_thread();
 	void run();
 	void start();
-	bool push(task_callback* data);
-	void wait();
 	void stop();
-	bool is_full();
-	bool is_empty();
+
 	int get_thread_id();
 
 private:
-	std::queue<task_callback*> tasks_;
 	std::atomic<bool> thread_runing_;
-	std::mutex task_lock_;
-	std::mutex thread_lock_;
-	std::condition_variable con_;
-	int max_queue_size_;
 	std::thread* thd_ = NULL;
 	int thread_id_;
-	std::atomic<int> task_size_;
+	thread_pool* pthread_pool_;
 };
 typedef worker_thread* pworker_thread;
 #endif

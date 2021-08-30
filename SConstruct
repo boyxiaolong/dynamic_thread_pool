@@ -20,4 +20,5 @@ for dir in all_dirs:
 path= ['/bin', '/usr/bin', '/opt/rh/devtoolset-8/root/usr/bin']
 env = Environment(ENV={'PATH':path})
 env.MergeFlags(inc_flags)
-env.Program('dynamic_thread_pool', list(obj), LIBS=['pthread'])
+env.MergeFlags(cc_flags)
+env.Program('thread_pool', list(obj), LIBS=['pthread'])

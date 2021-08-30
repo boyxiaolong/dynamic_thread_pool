@@ -11,9 +11,9 @@
 
 #include "task_callback.h"
 #include "worker_thread.h"
-#include "dynamic_thread_pool.h"
 #include "stdio.h"
 #include <memory>
+#include "thread_pool.h"
 
 volatile std::sig_atomic_t gSignalStatus;
 std::atomic_bool is_running(true);
@@ -24,25 +24,23 @@ void sig_handler(int sig)
 int main()
 {
 	std::signal(SIGINT, sig_handler);
-	int min_thread_num = 5;
-	int max_thread_num = 10;
-	int max_queue_size = 10;
-	dynamic_thread_pool tp(min_thread_num, max_thread_num, max_queue_size);
-	for (int i = 0; i < 9; ++i)
+	int thread_num = 5;
+	thread_pool tp(thread_num);
+	tp.start();
 	{
-		ptask_callback pdata(new task_callback([](void* arg) {
+		auto fun = [](void* arg) {
 			if (NULL == arg)
 			{
 				return;
 			}
 
-			std::string& str = *(static_cast<std::string*> (arg));
-			printf("callback %s\n", str.c_str());
-			}, new std::string("test" + std::to_string(i))));
-		bool res = tp.push(pdata);
-		if (!res)
+			int& str = *(static_cast<int*> (arg));
+			printf("callback %d\n", str);
+		};
+		for (int i = 1; i < 9; ++i)
 		{
-			delete pdata;
+			std::shared_ptr<task_callback> pdata(task_callback::create(fun, new int(i)));
+			tp.push(pdata);
 		}
 	}
 

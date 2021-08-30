@@ -1,2 +1,3 @@
-# dynamic_thread_pool
-动态线程池
+# thread_pool
+暂时实现了固定个数的线程池
+
