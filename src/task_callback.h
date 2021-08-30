@@ -12,13 +12,7 @@ public:
 	explicit task_callback(task_callback_fun fun, void* cb_arg);
 	virtual ~task_callback();
 
-	virtual void process()
-	{
-		if (cb_)
-		{
-			cb_(cb_arg_);
-		}
-	}
+	virtual void process();
 
 	void set_index(int index) { task_index_ = index; }
 	int get_index() { return task_index_; }

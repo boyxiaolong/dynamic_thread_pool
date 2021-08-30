@@ -23,11 +23,7 @@ public:
 	void stop();
 
 	bool push(task_callback_type t);
-
-	bool handle_task(task_callback_type t);
-
 	task_callback_type get_task();
-	void wait_tasks();
 
 private:
 	bool _gen_threads();

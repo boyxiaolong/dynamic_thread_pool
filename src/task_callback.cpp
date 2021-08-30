@@ -27,3 +27,11 @@ task_callback::~task_callback()
 		delete cb_arg_;
 	}
 }
+
+void task_callback::process()
+{
+	if (cb_)
+	{
+		cb_(cb_arg_);
+	}
+}

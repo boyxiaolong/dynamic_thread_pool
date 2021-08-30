@@ -57,11 +57,6 @@ bool thread_pool::push(task_callback_type t)
 	{
 		return false;
 	}
-	return handle_task(t);
-}
-
-bool thread_pool::handle_task(task_callback_type t)
-{
 	++total_task_size_;
 	std::unique_lock<std::mutex> guard(task_lock_);
 	bool is_empty = tasks_.empty();
@@ -72,7 +67,6 @@ bool thread_pool::handle_task(task_callback_type t)
 	}
 	return true;
 }
-
 
 task_callback_type thread_pool::get_task()
 {
@@ -91,12 +85,6 @@ task_callback_type thread_pool::get_task()
 
 	--total_task_size_;
 	return pt;
-}
-
-void thread_pool::wait_tasks()
-{
-	std::unique_lock<std::mutex> guard(thread_lock_);
-	task_con_.wait(guard);
 }
 
 bool thread_pool::_gen_threads()
