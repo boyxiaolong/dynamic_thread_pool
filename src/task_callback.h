@@ -16,23 +16,25 @@
  *
  */
 
-#ifndef SRC_TASK_CALLBACK_H
-#define SRC_TASK_CALLBACK_H
+#ifndef SRC_TASK_CALLBACK_H_
+#define SRC_TASK_CALLBACK_H_
 
 #include <functional>
 
 typedef std::function<void(void*)> task_callback_fun;
 
-class task_callback
-{
+class task_callback {
 public:
 	static task_callback* create(task_callback_fun fun, void* cb_arg);
+
 	explicit task_callback(task_callback_fun fun, void* cb_arg);
+	
 	virtual ~task_callback();
 
 	virtual void process();
 
 	void set_index(int index) { task_index_ = index; }
+	
 	int get_index() { return task_index_; }
 
 private:
@@ -42,4 +44,4 @@ private:
 };
 typedef task_callback* ptask_callback;
 
-#endif
+#endif // SRC_TASK_CALLBACK_H_
