@@ -16,8 +16,8 @@
  *
  */
 
-#ifndef WORKER_THREAD_H
-#define WORKER_THREAD_H
+#ifndef SRC_WORKER_THREAD_H
+#define SRC_WORKER_THREAD_H
 
 #include <thread>
 #include <queue>

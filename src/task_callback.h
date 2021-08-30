@@ -16,8 +16,8 @@
  *
  */
 
-#ifndef task_callback_h
-#define task_callback_h
+#ifndef SRC_TASK_CALLBACK_H
+#define SRC_TASK_CALLBACK_H
 
 #include <functional>
 
