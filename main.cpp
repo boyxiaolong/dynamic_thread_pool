@@ -8,12 +8,12 @@
 #include <vector>
 #include <list>
 #include <string>
-
-#include "../include/task_callback.h"
-#include "../include/worker_thread.h"
 #include "stdio.h"
 #include <memory>
-#include "../include/thread_pool.h"
+
+#include "include/task_callback.h"
+#include "include/worker_thread.h"
+#include "include/thread_pool.h"
 
 volatile std::sig_atomic_t gSignalStatus;
 std::atomic_bool is_running(true);
