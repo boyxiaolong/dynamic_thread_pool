@@ -1,8 +1,8 @@
-#include "worker_thread.h"
-#include "task_callback.h"
+#include "../include/worker_thread.h"
+#include "../include/task_callback.h"
 #include "stdio.h"
-#include "thread_pool.h"
-#include "utils.h"
+#include "../include/thread_pool.h"
+#include "../include/utils.h"
 
 worker_thread::worker_thread(int thread_id, thread_pool* pthread_pool) :thread_id_(thread_id)
 , thread_runing_(false)

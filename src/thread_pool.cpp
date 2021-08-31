@@ -1,7 +1,7 @@
-#include "thread_pool.h"
-#include "worker_thread.h"
+#include "../include/thread_pool.h"
+#include "../include/worker_thread.h"
 #include "stdio.h"
-#include "task_callback.h"
+#include "../include/ask_callback.h"
 
 thread_pool::thread_pool(int thread_num) : thread_num_(thread_num)
 , is_runing_(true)
