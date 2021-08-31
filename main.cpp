@@ -23,8 +23,11 @@ void sig_handler(int sig) {
 
 int main() {
 	std::signal(SIGINT, sig_handler);
+	
 	int thread_num = 5;
+
 	thread_pool tp(thread_num);
+
 	tp.start();
 	{
 		auto fun = [](void* arg) {
@@ -45,7 +48,7 @@ int main() {
 	while (is_running) {
 		std::this_thread::sleep_for(std::chrono::milliseconds(10));
 	}
-	
+
 	printf("main exit\n");
 	return 0;
 }

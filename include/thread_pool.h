@@ -50,6 +50,7 @@ private:
 	bool _gen_threads();
 
 private:
+
 	typedef std::shared_ptr<worker_thread> worker_thread_type;
 	typedef std::list<worker_thread_type > thread_vec_type;
 
