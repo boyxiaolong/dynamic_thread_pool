@@ -6,27 +6,21 @@
 
 worker_thread::worker_thread(int thread_id, thread_pool* pthread_pool) :thread_id_(thread_id)
 , thread_runing_(false)
-, pthread_pool_(pthread_pool)
-{
+, pthread_pool_(pthread_pool) {
 }
 
-worker_thread::~worker_thread()
-{
+worker_thread::~worker_thread() {
 	printf("~worker_thread %d \n", thread_id_);
-	if (thd_)
-	{
+	if (thd_) {
 		thd_->join();
 		delete thd_;
 	}
 }
 
-void worker_thread::run()
-{
-	while (thread_runing_)
-	{
+void worker_thread::run() {
+	while (thread_runing_) {
 		task_callback_type ptask = pthread_pool_->get_task();
-		if (nullptr == ptask)
-		{
+		if (nullptr == ptask) {
 			break;
 		}
 		printf("thread %d process\n", thread_id_);
@@ -34,10 +28,8 @@ void worker_thread::run()
 	}
 }
 
-void worker_thread::start()
-{
-	if (NULL != thd_)
-	{
+void worker_thread::start() {
+	if (NULL != thd_) {
 		return;
 	}
 	printf("start thread %d\n", thread_id_);
@@ -45,13 +37,11 @@ void worker_thread::start()
 	thd_ = new std::thread(&worker_thread::run, this);
 }
 
-void worker_thread::stop()
-{
+void worker_thread::stop() {
 	thread_runing_ = false;
 }
 
-int worker_thread::get_thread_id()
-{
+int worker_thread::get_thread_id() {
 	return thread_id_;
 }
 

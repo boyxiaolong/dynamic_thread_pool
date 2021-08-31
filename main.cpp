@@ -17,37 +17,35 @@
 
 volatile std::sig_atomic_t gSignalStatus;
 std::atomic_bool is_running(true);
-void sig_handler(int sig)
-{
+void sig_handler(int sig) {
 	is_running = false;
 }
-int main()
-{
+
+int main() {
 	std::signal(SIGINT, sig_handler);
 	int thread_num = 5;
 	thread_pool tp(thread_num);
 	tp.start();
 	{
 		auto fun = [](void* arg) {
-			if (NULL == arg)
-			{
+			if (NULL == arg) {
 				return;
 			}
 
 			int& str = *(static_cast<int*> (arg));
 			printf("callback %d\n", str);
 		};
-		for (int i = 1; i < 9; ++i)
-		{
+
+		for (int i = 1; i < 9; ++i) {
 			std::shared_ptr<task_callback> pdata(task_callback::create(fun, new int(i)));
 			tp.push(pdata);
 		}
 	}
 
-	while (is_running)
-	{
+	while (is_running) {
 		std::this_thread::sleep_for(std::chrono::milliseconds(10));
 	}
+	
 	printf("main exit\n");
 	return 0;
 }
