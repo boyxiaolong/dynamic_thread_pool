@@ -113,16 +113,27 @@ int gen_session_id()
 	return session_id;
 }
 
+int64_t get_thread_id()
+{
+	std::stringstream ss;
+	ss << std::this_thread::get_id();
+	uint64_t id = std::stoull(ss.str());
+	return id;
+}
+
 Promise BeginSession(int ss_id) 
 {
-	printf("begin ssid:%d\n", ss_id);
+	printf("begin ssid:%d thread %lld\n", ss_id, get_thread_id());
 	Session* ps = new Session;
 	ps->session_id = ss_id;
+
+	int tmp_id = 999;
 	std::cout << "before co_await" << std::endl;
 	add_to_map(ps);
 	co_await Awaiter{ps};
 
-	std::cout << "ssid : " << ps->session_id << " handle end\n";
+	std::cout << "ssid : " << ps->session_id << " thread_id:" << get_thread_id() << " handle end" 
+		<< "tmp_id:" << tmp_id << std::endl;
 	delete ps;
 	co_return;
 }
