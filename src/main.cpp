@@ -25,7 +25,7 @@ void sig_handler(int sig)
 }
 
 
-struct Session
+struct RpcSession
 {
 	int session_id = 0;
 	std::coroutine_handle<> h;
@@ -49,7 +49,7 @@ struct Awaiter {
 			ps->h = h;
 		}
 	}
-	Session* ps;
+	RpcSession* ps;
 };
 
 struct Promise {
@@ -81,21 +81,15 @@ struct Promise {
 	};
 };
 
-struct Rpc
-{
-	Session* ps = nullptr;
-
-};
-
-using session_map = std::map<int, Session*>;
+using session_map = std::map<int, RpcSession*>;
 session_map my_ss_map;
 
-void add_to_map(Session* ps)
+void add_to_map(RpcSession* ps)
 {
 	my_ss_map[ps->session_id] = ps;
 }
 
-Session* get_ss(int id)
+RpcSession* get_ss(int id)
 {
 	session_map::iterator iter = my_ss_map.find(id);
 	if (my_ss_map.end() == iter)
@@ -124,7 +118,7 @@ int64_t get_thread_id()
 Promise BeginSession(int ss_id) 
 {
 	printf("begin ssid:%d thread %lld\n", ss_id, get_thread_id());
-	Session* ps = new Session;
+	RpcSession* ps = new RpcSession;
 	ps->session_id = ss_id;
 
 	int tmp_id = 999;
@@ -141,7 +135,7 @@ Promise BeginSession(int ss_id)
 void EndSession(int ss_id)
 {
 	printf("end ssid:%d\n", ss_id);
-	Session* ps = get_ss(ss_id);
+	RpcSession* ps = get_ss(ss_id);
 	if (nullptr == ps)
 	{
 		return;
@@ -215,7 +209,6 @@ int main()
 				printf("error\n");
 				continue;
 			}
-			std::string* pstr(new std::string(input));
 			std::shared_ptr<task_callback> pdata(task_callback::create(handle_input, pinfo));
 			tp.push(pdata);
 		}
